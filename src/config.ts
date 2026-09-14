@@ -21,7 +21,7 @@ export const CONFIG = {
     /** Media y máximo del desplazamiento del halo, en unidades SVG. */
     haloMeanSvg: 0.49,
     haloMaxSvg: 3.4,
-    isoDotGap: 0.6,
+    isoDotGap: 0.93,
     sphereMargin: 0.008,
     panelCurve: 0.18,
     panelThickness: 0.04,
