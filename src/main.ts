@@ -56,7 +56,7 @@ function start(): void {
   const isTouch = matchMedia('(pointer: coarse)').matches;
   const updateLabels = () => {
     const onWord = state.phase === 'idleWord' || (state.phase === 'morph' && state.dir === 1);
-    hint.textContent = `${isTouch ? 'tocá' : 'click'} para transformar`;
+    hint.textContent = `${isTouch ? 'tap' : 'click'} to transform`;
     canvas.setAttribute('aria-label', `Escultura de partículas con la forma ${onWord ? 'basement.' : 'b.'}`);
   };
   const toggle = () => {
