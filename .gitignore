@@ -8,3 +8,7 @@ docs/superpowers/
 
 # Capturas de verificación visual
 .playwright-mcp/
+
+# Vercel: enlace local del proyecto y variables de entorno
+.vercel
+.env*
