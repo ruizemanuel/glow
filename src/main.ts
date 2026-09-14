@@ -19,7 +19,11 @@ const hint = element<HTMLButtonElement>('hint');
 const fpsLabel = element<HTMLSpanElement>('fps');
 const overlay = element<HTMLDivElement>('overlay');
 
+// Se activa al mostrar un error: el loop no vuelve a arrancar.
+let stopped = false;
+
 function showError(message: string, error?: unknown): void {
+  stopped = true;
   if (error) console.error(error);
   overlay.textContent = message;
   overlay.hidden = false;
@@ -130,6 +134,7 @@ function start(): void {
   let raf = 0;
   let last = 0;
   const frame = (now: number) => {
+    if (stopped) return;
     raf = requestAnimationFrame(frame);
     try {
       const frameMs = last ? now - last : 16.67;
@@ -154,7 +159,7 @@ function start(): void {
     if (document.hidden) {
       cancelAnimationFrame(raf);
       raf = 0;
-    } else if (!raf) {
+    } else if (!raf && !stopped) {
       last = 0;
       raf = requestAnimationFrame(frame);
     }

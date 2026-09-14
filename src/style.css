@@ -8,6 +8,11 @@
   box-sizing: border-box;
 }
 
+/* El atributo hidden tiene que ganarle a los display de cada elemento (overlay, canvas, UI). */
+[hidden] {
+  display: none !important;
+}
+
 html,
 body {
   margin: 0;
