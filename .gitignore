@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+
+# Specs y planes de diseño: no se commitean
+docs/superpowers/
+
+# Capturas de verificación visual
+.playwright-mcp/
