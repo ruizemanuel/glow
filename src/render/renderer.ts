@@ -1,5 +1,6 @@
 import type { Config } from '../config';
 import { tiltMatrix, type Layout } from '../view';
+import { createBloomPass, type BloomPass } from './bloom';
 import { createCompositePass, type CompositePass } from './composite';
 import { createContext, createTarget, deleteTarget, type GLContext, type Target } from './gl';
 import { createParticlePass, type ParticlePass } from './particles';
@@ -24,6 +25,7 @@ export function createRenderer(canvas: HTMLCanvasElement, capacity: number, cfg:
   const ctx = createContext(canvas);
   const { gl } = ctx;
   const particles: ParticlePass = createParticlePass(ctx, capacity);
+  const bloom: BloomPass = createBloomPass(ctx);
   const composite: CompositePass = createCompositePass(ctx);
   let heat: Target | null = null;
   let layout: Layout | null = null;
@@ -36,6 +38,7 @@ export function createRenderer(canvas: HTMLCanvasElement, capacity: number, cfg:
       if (canvas.height !== next.height) canvas.height = next.height;
       if (heat) deleteTarget(gl, heat);
       heat = createTarget(ctx, next.width, next.height);
+      bloom.resize(next.width, next.height);
     },
     render(frame) {
       if (!heat || !layout || gl.isContextLost()) return;
@@ -47,9 +50,9 @@ export function createRenderer(canvas: HTMLCanvasElement, capacity: number, cfg:
         centerY: layout.centerY,
         minRadiusPx: cfg.render.minRadiusPx * layout.dpr,
       });
-      // Sin bloom todavía: se pasa el mismo buffer de calor con intensidad 0.
-      composite.draw(heat, heat, layout.width, layout.height, {
-        bloomStrength: 0,
+      const glow = bloom.run(heat);
+      composite.draw(heat, glow, layout.width, layout.height, {
+        bloomStrength: cfg.render.bloomStrength,
         exposure: cfg.render.exposure,
         grain: cfg.render.grain,
         time: frame.time,
@@ -59,6 +62,7 @@ export function createRenderer(canvas: HTMLCanvasElement, capacity: number, cfg:
     dispose() {
       if (heat) deleteTarget(gl, heat);
       particles.dispose();
+      bloom.dispose();
       composite.dispose();
     },
   };
