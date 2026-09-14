@@ -48,7 +48,7 @@ export const CONFIG = {
 
   tilt: { b: 0.13, word: 0.05, stiffness: 24, damping: 7.5 },
 
-  heat: { dotBoost: 2.0, dotEmissive: 0.75, pulseAmp: 0.12, pulseFreq: 1.3, word: 1.4 },
+  heat: { dotBoost: 2.6, dotEmissive: 0.75, pulseAmp: 0.12, pulseFreq: 1.3, word: 2.4 },
 
   render: {
     maxDpr: 2,
