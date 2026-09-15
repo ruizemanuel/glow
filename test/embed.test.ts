@@ -23,14 +23,14 @@ function points(list: Array<{ x: number; y: number; kind: number; depth?: number
 const CAM = 6.3;
 
 describe('sphereRadiusFor', () => {
-  it('es algo menor que el radio de la silueta por la perspectiva', () => {
+  it('is slightly smaller than the silhouette radius due to perspective', () => {
     const r = sphereRadiusFor(1, 0, CAM);
     expect(r).toBeLessThan(1);
     expect(r).toBeGreaterThan(0.98);
   });
 });
 
-describe('embed en esfera', () => {
+describe('embed on sphere', () => {
   const radius = sphereRadiusFor(1.2, 0.008, CAM);
   const p = points([
     { x: 0.3, y: -0.4, kind: KIND_SURFACE },
@@ -40,50 +40,50 @@ describe('embed en esfera', () => {
   ]);
   const e = embed(p, { type: 'sphere', radius, camDist: CAM });
 
-  it('pone la superficie sobre la esfera, del lado de la cámara', () => {
+  it('places the surface on the sphere, on the camera side', () => {
     expect(Math.hypot(e.tx[0], e.ty[0], e.tz[0])).toBeCloseTo(radius, 5);
     expect(e.tz[0]).toBeGreaterThan(0);
   });
 
-  it('proyecta la superficie exactamente sobre su punto 2D', () => {
+  it('projects the surface exactly onto its 2D point', () => {
     const s = CAM / (CAM - e.tz[0]);
     expect(e.tx[0] * s).toBeCloseTo(0.3, 5);
     expect(e.ty[0] * s).toBeCloseTo(-0.4, 5);
   });
 
-  it('manda el volumen con depth=1 al lado lejano, sobre la misma línea de visión', () => {
+  it('sends the volume with depth=1 to the far side, along the same line of sight', () => {
     expect(e.tz[1]).toBeLessThan(0);
     const s = CAM / (CAM - e.tz[1]);
     expect(e.tx[1] * s).toBeCloseTo(0.3, 5);
   });
 
-  it('usa la normal del borde en el rim y suma el desplazamiento en el halo', () => {
+  it('uses the edge normal for the rim and adds the offset for the halo', () => {
     expect(e.nx[2]).toBeLessThan(-0.99);
     expect(e.tx[3]).toBeGreaterThan(0.1);
   });
 
-  it('produce normales unitarias', () => {
+  it('produces unit normals', () => {
     for (let i = 0; i < 4; i++) expect(Math.hypot(e.nx[i], e.ny[i], e.nz[i])).toBeCloseTo(1, 5);
   });
 });
 
-describe('embed en panel', () => {
+describe('embed on panel', () => {
   const p = points([
     { x: 0.8, y: 0.1, kind: KIND_SURFACE },
     { x: 0.8, y: 0.1, kind: KIND_VOLUME, depth: 1 },
   ]);
   const e = embed(p, { type: 'panel', curve: 0.18, thickness: 0.04 });
 
-  it('curva la superficie hacia atrás en los extremos', () => {
+  it('curves the surface backward at the ends', () => {
     expect(e.tz[0]).toBeCloseTo(-0.18 * 0.64, 5);
     expect(e.tx[0]).toBeCloseTo(0.8, 5);
   });
 
-  it('da espesor al volumen', () => {
+  it('gives thickness to the volume', () => {
     expect(e.tz[1]).toBeCloseTo(-0.18 * 0.64 + 0.04, 5);
   });
 
-  it('inclina la normal según la curvatura', () => {
+  it('tilts the normal according to the curvature', () => {
     expect(e.nx[0]).toBeGreaterThan(0);
     expect(Math.hypot(e.nx[0], e.ny[0], e.nz[0])).toBeCloseTo(1, 5);
   });

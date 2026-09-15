@@ -11,8 +11,8 @@ function run(s: SceneState, seconds: number, dt = 0.1): SceneState {
   return out;
 }
 
-describe('máquina de estados', () => {
-  it('empieza en intro y pasa a idleB', () => {
+describe('state machine', () => {
+  it('starts in intro and moves to idleB', () => {
     let s = initialState();
     expect(s.phase).toBe('intro');
     s = run(s, 3.4);
@@ -21,12 +21,12 @@ describe('máquina de estados', () => {
     expect(s.phase).toBe('idleB');
   });
 
-  it('ignora el toggle durante la intro', () => {
+  it('ignores the toggle during intro', () => {
     const s = initialState();
     expect(toggle(s)).toBe(s);
   });
 
-  it('recorre idleB → morph → idleWord → morph → idleB', () => {
+  it('goes through idleB → morph → idleWord → morph → idleB', () => {
     let s = run(initialState(), 3.6);
     s = toggle(s);
     expect(s).toMatchObject({ phase: 'morph', p: 0, dir: 1 });
@@ -41,7 +41,7 @@ describe('máquina de estados', () => {
     expect(s).toMatchObject({ phase: 'idleB', p: 0 });
   });
 
-  it('invierte la dirección a mitad de transición sin saltar', () => {
+  it('reverses direction mid-transition without jumping', () => {
     let s = toggle(run(initialState(), 3.6));
     s = run(s, 1.2);
     const p = s.p;
@@ -52,12 +52,12 @@ describe('máquina de estados', () => {
     expect(s.phase).toBe('idleB');
   });
 
-  it('con intro 0 pasa a idleB en el primer tick', () => {
+  it('with intro 0 moves to idleB on the first tick', () => {
     const s = reduce(initialState(), { type: 'tick', dt: 0.016 }, { intro: 0, morph: 0.6 });
     expect(s.phase).toBe('idleB');
   });
 
-  it('shapeBlend refleja la forma actual', () => {
+  it('shapeBlend reflects the current shape', () => {
     expect(shapeBlend({ phase: 'idleB', t: 0, p: 0, dir: 1 })).toBe(0);
     expect(shapeBlend({ phase: 'morph', t: 0, p: 0.3, dir: 1 })).toBe(0.3);
     expect(shapeBlend({ phase: 'idleWord', t: 0, p: 1, dir: 1 })).toBe(1);

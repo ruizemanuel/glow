@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { clamp, createRng, gaussian, lerp, smoothstep } from '../src/rng';
 
 describe('createRng', () => {
-  it('es determinista y devuelve valores en [0, 1)', () => {
+  it('is deterministic and returns values in [0, 1)', () => {
     const a = createRng(42);
     const b = createRng(42);
     for (let i = 0; i < 1000; i++) {
@@ -13,11 +13,11 @@ describe('createRng', () => {
     }
   });
 
-  it('cambia con la semilla', () => {
+  it('changes with the seed', () => {
     expect(createRng(1)()).not.toBe(createRng(2)());
   });
 
-  it('gaussian tiene media cercana a 0 y desvío cercano a 1', () => {
+  it('gaussian has mean close to 0 and standard deviation close to 1', () => {
     const rng = createRng(3);
     let sum = 0;
     let sq = 0;
@@ -32,8 +32,8 @@ describe('createRng', () => {
   });
 });
 
-describe('utilidades', () => {
-  it('clamp, lerp y smoothstep', () => {
+describe('utilities', () => {
+  it('clamp, lerp and smoothstep', () => {
     expect(clamp(5, 0, 1)).toBe(1);
     expect(clamp(-5, 0, 1)).toBe(0);
     expect(lerp(2, 4, 0.25)).toBe(2.5);

@@ -1,6 +1,6 @@
 import type { Mask, RasterFn } from './build';
 
-/** Rasterizador de navegador: dibuja los trazos con Path2D y umbraliza el alfa en 128. */
+/** Browser rasterizer: draws the paths with Path2D and thresholds alpha at 128. */
 export const rasterizePaths: RasterFn = (parts, frame, size, margin) => {
   const frameW = frame.x1 - frame.x0;
   const frameH = frame.y1 - frame.y0;

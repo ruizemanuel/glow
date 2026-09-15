@@ -1,9 +1,9 @@
 const DIAGONAL = Math.SQRT2;
 
 /**
- * Transformada de distancia chamfer (costos 1 y √2) en dos pasadas.
- * Devuelve, para cada píxel interior (mask = 1), la distancia al píxel exterior más cercano.
- * Los píxeles exteriores valen 0 y todo lo que está fuera del lienzo cuenta como exterior.
+ * Two-pass chamfer distance transform (costs 1 and √2).
+ * Returns, for each interior pixel (mask = 1), the distance to the nearest exterior pixel.
+ * Exterior pixels are worth 0, and everything outside the canvas counts as exterior.
  */
 export function chamferDistance(mask: Uint8Array, width: number, height: number): Float32Array {
   const d = new Float32Array(width * height);

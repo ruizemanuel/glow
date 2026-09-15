@@ -1,6 +1,6 @@
 export type Rng = () => number;
 
-/** Generador congruencial lineal determinista: devuelve valores en [0, 1). */
+/** Deterministic linear congruential generator: returns values in [0, 1). */
 export function createRng(seed: number): Rng {
   let state = seed >>> 0;
   return () => {
@@ -9,7 +9,7 @@ export function createRng(seed: number): Rng {
   };
 }
 
-/** Normal estándar (Box–Muller). */
+/** Standard normal (Box–Muller). */
 export function gaussian(rng: Rng): number {
   return Math.sqrt(-2 * Math.log(Math.max(1e-8, rng()))) * Math.cos(2 * Math.PI * rng());
 }

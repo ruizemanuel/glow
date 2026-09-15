@@ -7,7 +7,7 @@ export interface PerfParams {
 }
 
 export interface Perf {
-  /** FPS mostrado (promedio del último segundo), o null si todavía no hay dato. */
+  /** Displayed FPS (average of the last second), or null if no data yet. */
   fps: number | null;
   frameEma: number;
   sinceAdapt: number;
@@ -20,7 +20,7 @@ export function createPerf(nActive: number): Perf {
   return { fps: null, frameEma: 16.67, sinceAdapt: 0, fpsFrames: 0, fpsTime: 0, nActive };
 }
 
-/** Registra el intervalo entre frames. Devuelve true cuando se actualizó `fps`. */
+/** Records the interval between frames. Returns true when `fps` was updated. */
 export function recordFrame(p: Perf, frameMs: number): boolean {
   p.frameEma += 0.05 * (frameMs - p.frameEma);
   p.fpsFrames++;
@@ -32,7 +32,7 @@ export function recordFrame(p: Perf, frameMs: number): boolean {
   return true;
 }
 
-/** Cada `interval` segundos ajusta la cantidad activa según el tiempo de frame. Devuelve true si cambió. */
+/** Every `interval` seconds, adjusts the active count based on frame time. Returns true if it changed. */
 export function adaptCount(p: Perf, dtSec: number, nMin: number, nCap: number, params: PerfParams): boolean {
   p.sinceAdapt += dtSec;
   const before = p.nActive;

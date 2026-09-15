@@ -20,7 +20,7 @@ const dist = chamferDistance(mask, W, H);
 const halo = { meanPx: 2, maxPx: 10 };
 
 describe('kindCounts', () => {
-  it('suma n y respeta las proporciones', () => {
+  it('sums to n and respects the proportions', () => {
     const c = kindCounts(1000, CONFIG.kinds);
     expect(c).toEqual([650, 200, 30, 120]);
     expect(kindCounts(7, CONFIG.kinds).reduce((a, b) => a + b, 0)).toBe(7);
@@ -28,7 +28,7 @@ describe('kindCounts', () => {
 });
 
 describe('outwardNormal', () => {
-  it('apunta hacia afuera en los bordes rectos', () => {
+  it('points outward on straight edges', () => {
     const [lx, ly] = outwardNormal(mask, dist, W, H, 16, 32);
     expect(lx).toBeCloseTo(-1, 5);
     expect(ly).toBeCloseTo(0, 5);
@@ -37,7 +37,7 @@ describe('outwardNormal', () => {
     expect(ty).toBeCloseTo(-1, 5);
   });
 
-  it('usa el gradiente de distancia en el interior', () => {
+  it('uses the distance gradient in the interior', () => {
     const [nx, ny] = outwardNormal(mask, dist, W, H, 20, 32);
     expect(nx).toBeCloseTo(-1, 5);
     expect(ny).toBeCloseTo(0, 5);
@@ -48,14 +48,14 @@ describe('sampleShape', () => {
   const n = 2000;
   const s = sampleShape(mask, dist, W, H, n, CONFIG.kinds, halo, createRng(1));
 
-  it('produce la cantidad de puntos por tipo, en bloques ordenados', () => {
+  it('produces the correct point count per kind, in ordered blocks', () => {
     const counts = [0, 0, 0, 0];
     for (let i = 0; i < n; i++) counts[s.kind[i]]++;
     expect(counts).toEqual(kindCounts(n, CONFIG.kinds));
     for (let i = 1; i < n; i++) expect(s.kind[i]).toBeGreaterThanOrEqual(s.kind[i - 1]);
   });
 
-  it('coloca surface, volume y rim dentro de la máscara', () => {
+  it('places surface, volume and rim inside the mask', () => {
     for (let i = 0; i < n; i++) {
       if (s.kind[i] === KIND_HALO) continue;
       expect(s.x[i]).toBeGreaterThanOrEqual(16);
@@ -65,7 +65,7 @@ describe('sampleShape', () => {
     }
   });
 
-  it('coloca el rim a menos de 2 px del borde', () => {
+  it('places the rim less than 2 px from the edge', () => {
     for (let i = 0; i < n; i++) {
       if (s.kind[i] !== KIND_RIM) continue;
       const inset = Math.min(s.x[i] - 16, 48 - s.x[i], s.y[i] - 16, 48 - s.y[i]);
@@ -73,7 +73,7 @@ describe('sampleShape', () => {
     }
   });
 
-  it('coloca el halo fuera del núcleo interior de la forma', () => {
+  it('places the halo outside the interior core of the shape', () => {
     for (let i = 0; i < n; i++) {
       if (s.kind[i] !== KIND_HALO) continue;
       const x = s.x[i] + s.ox[i];
@@ -83,20 +83,20 @@ describe('sampleShape', () => {
     }
   });
 
-  it('solo guarda distancia al borde en surface y volume', () => {
+  it('only stores edge distance for surface and volume', () => {
     for (let i = 0; i < n; i++) {
       if (s.kind[i] === KIND_SURFACE || s.kind[i] === KIND_VOLUME) expect(s.edge[i]).toBeGreaterThan(0);
       else expect(s.edge[i]).toBe(0);
     }
   });
 
-  it('es determinista con la misma semilla', () => {
+  it('is deterministic with the same seed', () => {
     const again = sampleShape(mask, dist, W, H, n, CONFIG.kinds, halo, createRng(1));
     expect(Array.from(again.x)).toEqual(Array.from(s.x));
     expect(Array.from(again.oy)).toEqual(Array.from(s.oy));
   });
 
-  it('falla con una máscara vacía', () => {
+  it('fails with an empty mask', () => {
     const empty = new Uint8Array(W * H);
     expect(() => sampleShape(empty, dist, W, H, 10, CONFIG.kinds, halo, createRng(1))).toThrow(/too few interior/);
   });

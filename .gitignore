@@ -3,12 +3,12 @@ dist/
 .DS_Store
 *.log
 
-# Specs y planes de diseño: no se commitean
+# Local design notes (not published)
 docs/superpowers/
 
-# Capturas de verificación visual
+# Local browser automation artifacts
 .playwright-mcp/
 
-# Vercel: enlace local del proyecto y variables de entorno
+# Vercel: local project link and environment variables
 .vercel
 .env*

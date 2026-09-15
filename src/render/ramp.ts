@@ -1,4 +1,4 @@
-/** Rampa de color del calor mapeado (h' ∈ [0, 1]). Spec §7.3. */
+/** Color ramp for mapped heat (h' ∈ [0, 1]). */
 export const RAMP_STOPS: ReadonlyArray<readonly [number, string]> = [
   [0.0, '#000000'],
   [0.18, '#3c0800'],
@@ -12,7 +12,7 @@ function hexToRgb(hex: string): [number, number, number] {
   return [((v >> 16) & 255) / 255, ((v >> 8) & 255) / 255, (v & 255) / 255];
 }
 
-/** Evalúa la rampa en TypeScript (espejo exacto del GLSL generado). */
+/** Evaluates the ramp in TypeScript (an exact mirror of the generated GLSL). */
 export function rampColor(h: number): [number, number, number] {
   const x = Math.min(1, Math.max(0, h));
   for (let i = 1; i < RAMP_STOPS.length; i++) {
@@ -30,7 +30,7 @@ export function rampColor(h: number): [number, number, number] {
 
 const f = (v: number) => v.toFixed(5);
 
-/** Genera la función GLSL `vec3 ramp(float x)` a partir de RAMP_STOPS. */
+/** Generates the GLSL function `vec3 ramp(float x)` from RAMP_STOPS. */
 export function rampGlsl(): string {
   const lines = ['vec3 ramp(float x) {', '  x = clamp(x, 0.0, 1.0);'];
   for (let i = 1; i < RAMP_STOPS.length; i++) {

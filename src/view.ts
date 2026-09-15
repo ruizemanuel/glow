@@ -4,23 +4,23 @@ export interface Layout {
   cssWidth: number;
   cssHeight: number;
   dpr: number;
-  /** Tamaño del lienzo en píxeles de dispositivo. */
+  /** Canvas size in device pixels. */
   width: number;
   height: number;
-  /** Píxeles de dispositivo por unidad de mundo. */
+  /** Device pixels per world unit. */
   pxPerUnit: number;
   centerX: number;
   centerY: number;
-  /** Escala mundo del wordmark (el isotipo tiene escala 1). */
+  /** World scale of the wordmark (the isotype has scale 1). */
   wordScale: number;
-  /** Unidades de mundo por "unidad iso" en cada forma. */
+  /** World units per "iso unit" in each shape. */
   unitA: number;
   unitB: number;
   mobile: boolean;
 }
 
 export interface LayoutShapes {
-  /** Semialto del wordmark en espacio normalizado (y ∈ [−h, h]). */
+  /** Wordmark half-height in normalized space (y ∈ [−h, h]). */
   wordHalfHeight: number;
   isoHalfSvg: number;
   wordHalfSvg: number;
@@ -51,7 +51,7 @@ export function computeLayout(cssWidth: number, cssHeight: number, devicePixelRa
 }
 
 /**
- * Rotación de inclinación: primero yaw (eje Y), después pitch (eje X).
+ * Tilt rotation: first yaw (Y axis), then pitch (X axis).
  * x' = x·cos(yaw) + z·sin(yaw); z' = z·cos(yaw) − x·sin(yaw); y'' = y·cos(pitch) − z'·sin(pitch); z'' = y·sin(pitch) + z'·cos(pitch)
  */
 export function rotate(yaw: number, pitch: number, x: number, y: number, z: number, out: Float32Array | number[]): void {
@@ -66,7 +66,7 @@ export function rotate(yaw: number, pitch: number, x: number, y: number, z: numb
   out[2] = y * l + z1 * u;
 }
 
-/** La misma rotación que `rotate`, como mat3 en orden por columnas para GLSL. */
+/** The same rotation as `rotate`, as a column-major mat3 for GLSL. */
 export function tiltMatrix(yaw: number, pitch: number): Float32Array {
   const c = Math.cos(yaw);
   const s = Math.sin(yaw);
@@ -75,13 +75,13 @@ export function tiltMatrix(yaw: number, pitch: number): Float32Array {
   return Float32Array.from([c, l * s, -u * s, 0, u, l, s, -l * c, u * c]);
 }
 
-/** Proyección de un punto ya rotado a píxeles de dispositivo (y hacia abajo). */
+/** Projection of an already-rotated point to device pixels (y downward). */
 export function projectToScreen(layout: Layout, camDist: number, x: number, y: number, z: number): [number, number] {
   const s = camDist / Math.max(1.6, camDist - z);
   return [layout.centerX + x * s * layout.pxPerUnit, layout.centerY - y * s * layout.pxPerUnit];
 }
 
-/** Punto del puntero (px CSS) a coordenadas de mundo en el plano z = 0. */
+/** Pointer position (CSS px) to world coordinates on the z = 0 plane. */
 export function screenToWorld(layout: Layout, cssX: number, cssY: number): [number, number] {
   return [(cssX * layout.dpr - layout.centerX) / layout.pxPerUnit, (layout.centerY - cssY * layout.dpr) / layout.pxPerUnit];
 }

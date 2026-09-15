@@ -10,12 +10,12 @@ export interface Mask {
   height: number;
   /** 1 = interior. */
   data: Uint8Array;
-  /** Píxeles por unidad SVG. */
+  /** Pixels per SVG unit. */
   pxPerUnit: number;
   margin: number;
 }
 
-/** Dibuja los trazos en una máscara cuyo marco es `frame`: px = margin + (X − frame.x0) · pxPerUnit. */
+/** Draws the paths into a mask whose frame is `frame`: px = margin + (X − frame.x0) · pxPerUnit. */
 export type RasterFn = (parts: PathPart[], frame: BBox, size: number, margin: number) => Mask;
 
 export interface ShapeGroup {
@@ -27,11 +27,11 @@ export interface ShapeSet {
   iso: { body: ShapeGroup; dot: ShapeGroup };
   word: { body: ShapeGroup; dot: ShapeGroup };
   sphereRadius: number;
-  /** Semilado del isotipo en unidades SVG: define la "unidad iso". */
+  /** Half-side of the isotype in SVG units: defines the "iso unit". */
   isoHalfSvg: number;
-  /** Semiancho del wordmark en unidades SVG. */
+  /** Half-width of the wordmark in SVG units. */
   wordHalfSvg: number;
-  /** Semialto del wordmark en espacio normalizado. */
+  /** Half-height of the wordmark in normalized space. */
   wordHalfHeight: number;
 }
 

@@ -2,9 +2,9 @@ export type Phase = 'intro' | 'idleB' | 'morph' | 'idleWord';
 
 export interface SceneState {
   phase: Phase;
-  /** Segundos desde que empezó la fase actual. */
+  /** Seconds since the current phase started. */
   t: number;
-  /** Progreso de la transición: 0 = b., 1 = basement. */
+  /** Transition progress: 0 = b., 1 = basement. */
   p: number;
   dir: 1 | -1;
 }
@@ -49,7 +49,7 @@ export function reduce(s: SceneState, e: SceneEvent, timing: Timing): SceneState
   }
 }
 
-/** Mezcla global entre formas: 0 en b., 1 en basement. */
+/** Global blend between shapes: 0 at b., 1 at basement. */
 export function shapeBlend(s: SceneState): number {
   return s.phase === 'idleWord' ? 1 : s.phase === 'morph' ? s.p : 0;
 }

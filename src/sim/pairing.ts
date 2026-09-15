@@ -1,4 +1,4 @@
-/** Orden por columnas: por x, en k columnas de igual cantidad, y dentro de cada una de arriba (y mayor) hacia abajo. */
+/** Column order: by x, into k columns of equal size, each sorted top (higher y) to bottom. */
 function columnOrder(x: ArrayLike<number>, y: ArrayLike<number>, k: number): Int32Array {
   const n = x.length;
   const byX = Array.from({ length: n }, (_, i) => i).sort((a, b) => x[a] - x[b] || a - b);
@@ -13,8 +13,8 @@ function columnOrder(x: ArrayLike<number>, y: ArrayLike<number>, k: number): Int
 }
 
 /**
- * Empareja dos conjuntos de puntos del mismo tamaño preservando la vecindad aproximada.
- * Devuelve `match` con match[i] = índice en B del compañero del punto i de A.
+ * Pairs two equal-sized point sets while preserving approximate neighborhood.
+ * Returns `match` where match[i] = index in B of the partner of point i in A.
  */
 export function pairByColumns(ax: ArrayLike<number>, ay: ArrayLike<number>, bx: ArrayLike<number>, by: ArrayLike<number>): Int32Array {
   const n = ax.length;

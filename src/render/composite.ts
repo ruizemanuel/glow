@@ -28,7 +28,7 @@ export interface CompositeUniforms {
   exposure: number;
   grain: number;
   time: number;
-  /** Opacidad global (fundido de movimiento reducido). */
+  /** Global opacity (reduced-motion fade). */
   fade: number;
 }
 

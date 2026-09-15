@@ -1,6 +1,6 @@
 import { KIND_RIM, KIND_VOLUME } from './sample';
 
-/** Puntos de una forma en espacio normalizado (y hacia arriba). */
+/** Points of a shape in normalized space (y upward). */
 export interface ShapePoints {
   count: number;
   x: Float32Array;
@@ -8,10 +8,10 @@ export interface ShapePoints {
   ox: Float32Array;
   oy: Float32Array;
   oz: Float32Array;
-  /** Normal 2D hacia afuera. */
+  /** Outward-facing 2D normal. */
   nx: Float32Array;
   ny: Float32Array;
-  /** Distancia al borde en "unidades iso" (unidades SVG / semilado del isotipo). */
+  /** Distance to the edge in "iso units" (SVG units / isotype half-side). */
   edge: Float32Array;
   depth: Float32Array;
   kind: Uint8Array;
@@ -30,7 +30,7 @@ export type Surface =
   | { type: 'sphere'; radius: number; camDist: number }
   | { type: 'panel'; curve: number; thickness: number };
 
-/** Radio de la esfera cuya silueta, vista desde camDist, toca el punto de borde más lejano. */
+/** Radius of the sphere whose silhouette, seen from camDist, touches the farthest edge point. */
 export function sphereRadiusFor(maxBoundaryRadius: number, margin: number, camDist: number): number {
   const n = maxBoundaryRadius + margin;
   return n / Math.sqrt(1 + (n * n) / (camDist * camDist));

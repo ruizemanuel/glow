@@ -6,28 +6,28 @@ import type { Layout } from '../view';
 import { morphDelay } from './morph';
 import { pairByColumns } from './pairing';
 
-/** Estado de todas las partículas en arreglos por propiedad (SoA). Los vectores 3D se intercalan x, y, z. */
+/** State of all particles in per-property arrays (SoA). 3D vectors are interleaved x, y, z. */
 export interface Particles {
   capacity: number;
   kind: Uint8Array;
   isDot: Uint8Array;
-  /** Objetivos en espacio de forma, independientes del layout. */
+  /** Targets in shape space, independent of layout. */
   shapeA: Float32Array;
   shapeB: Float32Array;
-  /** Objetivos en mundo (applyLayout). */
+  /** Targets in world space (applyLayout). */
   targetA: Float32Array;
   targetB: Float32Array;
   travelA: Float32Array;
   travelB: Float32Array;
   normalA: Float32Array;
   normalB: Float32Array;
-  /** Normal 2D del borde, intercalada x, y. */
+  /** 2D edge normal, interleaved x, y. */
   rimA: Float32Array;
   rimB: Float32Array;
-  /** Distancia al borde en unidades iso. */
+  /** Distance to the edge, in iso units. */
   edgeA: Float32Array;
   edgeB: Float32Array;
-  /** Distancia del halo a su borde, en unidades iso. */
+  /** Distance from the halo to its edge, in iso units. */
   haloA: Float32Array;
   haloB: Float32Array;
   scatterDir: Float32Array;
@@ -44,7 +44,7 @@ export interface Particles {
   buoyancy: Float32Array;
   introDelay: Float32Array;
   morphDelay: Float32Array;
-  /** Solo en el punto: 0 al frente (derecha) y 1 atrás. */
+  /** Dot only: 0 at the front (right) and 1 at the back. */
   trail: Float32Array;
   lock: Float32Array;
   lockVel: Float32Array;
@@ -78,8 +78,8 @@ function pairGroups(groupA: ShapeGroup, groupB: ShapeGroup, dot: 0 | 1, entries:
 }
 
 /**
- * Orden barajado estratificado por (tipo, punto): cualquier prefijo es una muestra uniforme de cada estrato.
- * Devuelve índices de `strata` ordenados.
+ * Stratified shuffled order by (kind, dot): any prefix is a uniform sample of each stratum.
+ * Returns indices into `strata`, sorted.
  */
 export function stratifiedOrder(strata: ArrayLike<number>, rng: Rng): Int32Array {
   const n = strata.length;
@@ -221,7 +221,7 @@ export function createParticles(shapes: ShapeSet, rng: Rng, cfg: Config): Partic
   return P;
 }
 
-/** Recalcula objetivos y recorridos en mundo para un layout. */
+/** Recomputes world-space targets and travel distances for a layout. */
 export function applyLayout(P: Particles, layout: Layout): void {
   for (let i = 0; i < P.capacity; i++) {
     const i3 = i * 3;
@@ -239,7 +239,7 @@ export function applyLayout(P: Particles, layout: Layout): void {
   }
 }
 
-/** Centro medio del punto en cada forma (x, y de mundo). */
+/** Mean center of the dot in each shape (world x, y). */
 export function dotCenters(P: Particles): { a: [number, number]; b: [number, number] } {
   let ax = 0;
   let ay = 0;

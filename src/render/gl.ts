@@ -1,6 +1,6 @@
 export interface GLContext {
   gl: WebGL2RenderingContext;
-  /** true si se puede renderizar a R16F; si no, se usa RGBA8 con el calor escalado. */
+  /** true if it can render to R16F; otherwise RGBA8 is used with heat scaled. */
   floatTargets: boolean;
 }
 
@@ -94,7 +94,7 @@ export function deleteTarget(gl: WebGL2RenderingContext, t: Target): void {
   gl.deleteTexture(t.texture);
 }
 
-/** Vertex shader de triángulo a pantalla completa sin atributos (usa gl_VertexID). */
+/** Fullscreen triangle vertex shader with no attributes (uses gl_VertexID). */
 export const FULLSCREEN_VS = `#version 300 es
 out vec2 vUv;
 void main() {

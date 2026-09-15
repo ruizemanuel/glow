@@ -3,7 +3,7 @@ import { CONFIG } from '../src/config';
 import { adaptCount, createPerf, recordFrame } from '../src/perf';
 
 describe('perf', () => {
-  it('calcula el FPS por segundo', () => {
+  it('computes FPS per second', () => {
     const p = createPerf(1000);
     let changed = false;
     for (let i = 0; i < 61; i++) changed = recordFrame(p, 1000 / 60) || changed;
@@ -11,7 +11,7 @@ describe('perf', () => {
     expect(p.fps).toBe(60);
   });
 
-  it('baja un 10 % con frames lentos sin pasar del mínimo', () => {
+  it('drops by 10% with slow frames without going below the minimum', () => {
     const p = createPerf(10000);
     p.frameEma = 30;
     expect(adaptCount(p, 2, 8000, 24000, CONFIG.perf)).toBe(true);
@@ -22,14 +22,14 @@ describe('perf', () => {
     expect(p.nActive).toBe(8000);
   });
 
-  it('sube un 5 % con frames rápidos hasta el tope', () => {
+  it('rises by 5% with fast frames up to the cap', () => {
     const p = createPerf(23500);
     p.frameEma = 10;
     adaptCount(p, 2, 8000, 24000, CONFIG.perf);
     expect(p.nActive).toBe(24000);
   });
 
-  it('no cambia antes del intervalo y respeta un tope nuevo', () => {
+  it('does not change before the interval and respects a new cap', () => {
     const p = createPerf(20000);
     p.frameEma = 30;
     expect(adaptCount(p, 1, 5000, 24000, CONFIG.perf)).toBe(false);

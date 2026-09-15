@@ -4,7 +4,7 @@ import { createTilt, updateTilt } from '../src/sim/tilt';
 describe('updateTilt', () => {
   const params = { max: 0.13, stiffness: 24, damping: 7.5 };
 
-  it('sigue al puntero y queda acotada', () => {
+  it('follows the pointer and stays bounded', () => {
     const withPointer = createTilt();
     const without = createTilt();
     for (let i = 0; i < 300; i++) {
@@ -15,7 +15,7 @@ describe('updateTilt', () => {
     expect(Math.abs(withPointer.yaw)).toBeLessThan(0.25);
   });
 
-  it('con movimiento reducido vuelve a 0', () => {
+  it('returns to 0 with reduced motion', () => {
     const t = { yaw: 0.2, pitch: 0.1, vYaw: 1, vPitch: 1 };
     updateTilt(t, 1 / 60, 3, true, 1, 1, params, true);
     expect(t).toEqual({ yaw: 0, pitch: 0, vYaw: 0, vPitch: 0 });

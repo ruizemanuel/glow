@@ -1,6 +1,6 @@
 import { lerp } from '../rng';
 
-/** Hash entero de una celda 3D a [−1, 1]. */
+/** Integer hash of a 3D cell to [−1, 1]. */
 export function hash3(x: number, y: number, z: number): number {
   let n = Math.imul(x, 374761393) ^ Math.imul(y, 668265263) ^ Math.imul(z, 1442695041);
   n = Math.imul(n ^ (n >>> 13), 1274126177);
@@ -9,7 +9,7 @@ export function hash3(x: number, y: number, z: number): number {
 
 const fade = (t: number) => t * t * t * (t * (6 * t - 15) + 10);
 
-/** Ruido de valor 3D con suavizado quíntico, en [−1, 1]. */
+/** 3D value noise with quintic smoothing, in [−1, 1]. */
 export function valueNoise3(x: number, y: number, z: number): number {
   const xi = Math.floor(x);
   const yi = Math.floor(y);
@@ -36,7 +36,7 @@ export interface FlowField {
   glow: Float32Array;
 }
 
-/** Rejilla de size×size nodos que cubre [−extent, extent]². */
+/** Grid of size×size nodes covering [−extent, extent]². */
 export function createField(size: number, extent: number): FlowField {
   const n = size * size;
   return {
@@ -52,7 +52,7 @@ export function createField(size: number, extent: number): FlowField {
   };
 }
 
-/** Recalcula la rejilla para `time`: corrientes del ruido + curl del potencial + ondas viajeras. */
+/** Recomputes the grid for `time`: noise currents + curl of the potential + traveling waves. */
 export function updateField(f: FlowField, time: number): void {
   if (time === f.time) return;
   f.time = time;
@@ -88,7 +88,7 @@ export function updateField(f: FlowField, time: number): void {
   }
 }
 
-/** Muestreo bilineal en (x, y) de mundo. Escribe [dx, dy, dz, glow] en out. */
+/** Bilinear sampling at world (x, y). Writes [dx, dy, dz, glow] into out. */
 export function sampleField(f: FlowField, x: number, y: number, out: Float32Array | number[]): void {
   const n = f.size;
   const gx = Math.min(n - 1.001, Math.max(0, (x + f.extent) / f.step));

@@ -1,4 +1,4 @@
-// Todos los parámetros ajustables del experimento. Ver spec §5–§8.
+// All tunable parameters of the experiment.
 
 export const CONFIG = {
   seed: 73031,
@@ -18,7 +18,7 @@ export const CONFIG = {
   shapes: {
     rasterSize: 1024,
     rasterMargin: 8,
-    /** Media y máximo del desplazamiento del halo, en unidades SVG. */
+    /** Mean and max of the halo offset, in SVG units. */
     haloMeanSvg: 0.49,
     haloMaxSvg: 3.4,
     isoDotGap: 0.93,
@@ -52,7 +52,7 @@ export const CONFIG = {
 
   render: {
     maxDpr: 2,
-    /** Radio base de una partícula, en unidades de mundo. */
+    /** Base radius of a particle, in world units. */
     particleRadius: 0.012,
     sizeIso: 1.0,
     sizeWord: 0.85,

@@ -19,7 +19,7 @@ const hint = element<HTMLButtonElement>('hint');
 const fpsLabel = element<HTMLSpanElement>('fps');
 const overlay = element<HTMLDivElement>('overlay');
 
-// Se activa al mostrar un error: el loop no vuelve a arrancar.
+// Set when an error is shown: the loop does not restart.
 let stopped = false;
 
 function showError(message: string, error?: unknown): void {
@@ -57,7 +57,7 @@ function start(): void {
   const updateLabels = () => {
     const onWord = state.phase === 'idleWord' || (state.phase === 'morph' && state.dir === 1);
     hint.textContent = `${isTouch ? 'tap' : 'click'} to transform`;
-    canvas.setAttribute('aria-label', `Escultura de partículas con la forma ${onWord ? 'basement.' : 'b.'}`);
+    canvas.setAttribute('aria-label', `Particle sculpture shaped as ${onWord ? 'basement.' : 'b.'}`);
   };
   const toggle = () => {
     state = reduce(state, { type: 'toggle' }, timing());
@@ -65,7 +65,7 @@ function start(): void {
   };
   updateLabels();
 
-  // Entrada.
+  // Input.
   let down: { x: number; y: number; t: number; id: number } | null = null;
   const movePointer = (e: PointerEvent) => {
     const [x, y] = screenToWorld(layout, e.clientX, e.clientY);
@@ -126,7 +126,7 @@ function start(): void {
       renderer.resize(layout);
       contextLost = false;
     } catch (error) {
-      showError('No se pudo recuperar el contexto gráfico.', error);
+      showError('Could not restore the graphics context.', error);
     }
   });
 
@@ -152,7 +152,7 @@ function start(): void {
       if (state.phase !== 'morph') updateLabels();
     } catch (error) {
       cancelAnimationFrame(raf);
-      showError('El experimento se detuvo por un error. Revisá la consola.', error);
+      showError('The experiment stopped because of an error. Check the console.', error);
     }
   };
   document.addEventListener('visibilitychange', () => {
@@ -170,6 +170,6 @@ function start(): void {
 try {
   start();
 } catch (error) {
-  if (error instanceof WebGLUnavailableError) showError('Este experimento necesita WebGL2.');
-  else showError('No se pudo iniciar el experimento. Revisá la consola.', error);
+  if (error instanceof WebGLUnavailableError) showError('This experiment requires WebGL2.');
+  else showError('Could not start the experiment. Check the console.', error);
 }

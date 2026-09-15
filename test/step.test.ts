@@ -35,26 +35,26 @@ function meanSurfaceError(sim: Sim, target: Float32Array): number {
 }
 
 describe('stepSim', () => {
-  it('forma la b. durante la intro', () => {
+  it('forms the b. during the intro', () => {
     const sim = createSim(shapes, layout, N, false, cfg);
     const state = advance(sim, initialState(), 5);
     expect(state.phase).toBe('idleB');
     expect(meanSurfaceError(sim, sim.particles.targetA)).toBeLessThan(0.02);
   });
 
-  it('con movimiento reducido coloca todo en su lugar en un paso', () => {
+  it('with reduced motion places everything in position in a single step', () => {
     const sim = createSim(shapes, layout, N, true, cfg);
     stepSim(sim, { phase: 'idleB', t: 0, p: 0, dir: 1 }, DT, true);
     expect(meanSurfaceError(sim, sim.particles.targetA)).toBeLessThan(1e-6);
   });
 
-  it('termina la transición sobre basement.', () => {
+  it('finishes the transition on basement.', () => {
     const sim = createSim(shapes, layout, N, false, cfg);
     advance(sim, { phase: 'morph', t: 0, p: 0, dir: 1 }, 5);
     expect(meanSurfaceError(sim, sim.particles.targetB)).toBeLessThan(0.02);
   });
 
-  it('produce calor finito, no negativo, y el punto es más caliente que el cuerpo', () => {
+  it('produces finite, non-negative heat, and the dot is hotter than the body', () => {
     const sim = createSim(shapes, layout, N, false, cfg);
     advance(sim, initialState(), 5);
     const P = sim.particles;
@@ -77,7 +77,7 @@ describe('stepSim', () => {
     expect(dotHeat / dotN).toBeGreaterThan((1.5 * bodyHeat) / bodyN);
   });
 
-  it('desvanece las partículas que quedan fuera de nActive', () => {
+  it('fades out particles that fall outside nActive', () => {
     const sim = createSim(shapes, layout, N, false, cfg);
     const state = advance(sim, initialState(), 4);
     setActiveCount(sim, 1000);

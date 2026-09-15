@@ -12,7 +12,7 @@ const shapes = buildShapes(bboxRaster, N, cfg);
 const layout = computeLayout(1280, 800, 1, shapes, cfg);
 
 describe('stratifiedOrder', () => {
-  it('hace que cualquier prefijo respete las proporciones de cada estrato', () => {
+  it('makes any prefix respect the proportions of each stratum', () => {
     const strata = Uint8Array.from({ length: 10000 }, (_, i) => (i % 100 < 65 ? 0 : i % 100 < 85 ? 1 : i % 100 < 88 ? 2 : 3));
     const order = stratifiedOrder(strata, createRng(7));
     expect(new Set(order).size).toBe(10000);
@@ -29,28 +29,28 @@ describe('createParticles', () => {
   const P = createParticles(shapes, createRng(1), cfg);
   applyLayout(P, layout);
 
-  it('crea una partícula por punto con la cantidad correcta en el punto', () => {
+  it('creates one particle per point with the correct count in the dot', () => {
     expect(P.capacity).toBe(N);
     const dots = P.isDot.reduce((s, v) => s + v, 0);
     expect(dots).toBe(Math.round(N * cfg.particles.dotFraction));
   });
 
-  it('arranca en la nube, sin lock', () => {
+  it('starts in the cloud, unlocked', () => {
     expect(Array.from(P.pos.subarray(0, 30))).toEqual(Array.from(P.cloud.subarray(0, 30)));
     expect(P.lock.every((v) => v === 0)).toBe(true);
   });
 
-  it('escala los objetivos B por wordScale', () => {
+  it('scales the B targets by wordScale', () => {
     for (let i = 0; i < 50; i++) expect(P.targetB[i * 3]).toBeCloseTo(P.shapeB[i * 3] * layout.wordScale, 5);
   });
 
-  it('ubica el centro del punto a la derecha en ambas formas', () => {
+  it('places the dot center to the right in both shapes', () => {
     const { a, b } = dotCenters(P);
     expect(a[0]).toBeGreaterThan(0.5);
     expect(b[0]).toBeGreaterThan(layout.wordScale * 0.9);
   });
 
-  it('acota los retrasos y el recorrido', () => {
+  it('bounds the delays and the travel distance', () => {
     for (let i = 0; i < N; i++) {
       expect(P.morphDelay[i]).toBeGreaterThanOrEqual(0);
       expect(P.morphDelay[i]).toBeLessThanOrEqual(cfg.morph.spread);
@@ -58,7 +58,7 @@ describe('createParticles', () => {
     }
   });
 
-  it('marca la estela del punto: 0 al frente y 1 atrás', () => {
+  it('marks the dot trail: 0 at the front and 1 at the back', () => {
     let min = Infinity;
     let max = -Infinity;
     for (let i = 0; i < N; i++) {

@@ -8,7 +8,7 @@
   box-sizing: border-box;
 }
 
-/* El atributo hidden tiene que ganarle a los display de cada elemento (overlay, canvas, UI). */
+/* The hidden attribute must override each element's display (overlay, canvas, UI). */
 [hidden] {
   display: none !important;
 }

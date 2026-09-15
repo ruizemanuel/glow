@@ -8,7 +8,7 @@ function randomSet(n: number, seed: number, width: number): { x: Float32Array; y
 }
 
 describe('pairByColumns', () => {
-  it('devuelve una permutación', () => {
+  it('returns a permutation', () => {
     const a = randomSet(500, 1, 1);
     const b = randomSet(500, 2, 4);
     const match = pairByColumns(a.x, a.y, b.x, b.y);
@@ -17,13 +17,13 @@ describe('pairByColumns', () => {
     expect(Math.max(...match)).toBe(499);
   });
 
-  it('empareja un conjunto consigo mismo como identidad', () => {
+  it('pairs a set with itself as identity', () => {
     const a = randomSet(200, 3, 1);
     const match = pairByColumns(a.x, a.y, a.x, a.y);
     expect(Array.from(match)).toEqual(Array.from({ length: 200 }, (_, i) => i));
   });
 
-  it('preserva el orden izquierda→derecha', () => {
+  it('preserves left-to-right order', () => {
     const a = randomSet(900, 4, 1);
     const b = randomSet(900, 5, 5);
     const match = pairByColumns(a.x, a.y, b.x, b.y);
@@ -44,7 +44,7 @@ describe('pairByColumns', () => {
     expect(rightSum / rightN).toBeGreaterThan(2);
   });
 
-  it('falla con conjuntos de distinto tamaño', () => {
+  it('fails with sets of different sizes', () => {
     const a = randomSet(10, 1, 1);
     const b = randomSet(11, 2, 1);
     expect(() => pairByColumns(a.x, a.y, b.x, b.y)).toThrow(/equal-sized/);

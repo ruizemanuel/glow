@@ -31,7 +31,7 @@ void main() {
 
 export interface BloomPass {
   resize(width: number, height: number): void;
-  /** Devuelve el nivel ½ con el bloom acumulado. */
+  /** Returns the ½ level with the accumulated bloom. */
   run(source: Target): Target;
   dispose(): void;
 }

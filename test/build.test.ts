@@ -10,7 +10,7 @@ describe('buildShapes', () => {
   const set = buildShapes(bboxRaster, nMax, cfg);
   const dotCount = Math.round(nMax * CONFIG.particles.dotFraction);
 
-  it('reparte las partículas entre cuerpo y punto con los mismos tipos en ambas formas', () => {
+  it('splits particles between body and dot with the same kinds in both shapes', () => {
     expect(set.iso.body.points.count).toBe(nMax - dotCount);
     expect(set.word.body.points.count).toBe(nMax - dotCount);
     expect(set.iso.dot.points.count).toBe(dotCount);
@@ -24,7 +24,7 @@ describe('buildShapes', () => {
     expect(counts(set.word.body.points.kind)).toEqual(counts(set.iso.body.points.kind));
   });
 
-  it('normaliza el isotipo a [-1, 1] y el wordmark por su semiancho', () => {
+  it('normalizes the isotype to [-1, 1] and the wordmark by its half-width', () => {
     const iso = set.iso.body.points;
     const word = set.word.body.points;
     for (let i = 0; i < iso.count; i++) {
@@ -35,14 +35,14 @@ describe('buildShapes', () => {
     }
   });
 
-  it('ubica el punto del wordmark a la derecha y el del isotipo abajo a la derecha', () => {
+  it('places the wordmark dot to the right and the isotype dot to the bottom right', () => {
     const mean = (a: Float32Array) => a.reduce((s, v) => s + v, 0) / a.length;
     expect(mean(set.word.dot.points.x)).toBeGreaterThan(0.95);
     expect(mean(set.iso.dot.points.x)).toBeGreaterThan(0.6);
     expect(mean(set.iso.dot.points.y)).toBeLessThan(-0.6);
   });
 
-  it('calcula un radio de esfera que contiene la silueta', () => {
+  it('computes a sphere radius that contains the silhouette', () => {
     expect(set.sphereRadius).toBeGreaterThan(1);
     expect(set.sphereRadius).toBeLessThan(1.5);
     expect(set.isoHalfSvg).toBeCloseTo(7.7105, 3);

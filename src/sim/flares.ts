@@ -6,7 +6,7 @@ export interface Flare {
   period: number;
   offset: number;
   cycle: number;
-  /** Índice de la partícula fuente, o −1. */
+  /** Index of the source particle, or −1. */
   source: number;
   height: number;
   handedness: number;
@@ -41,7 +41,7 @@ export function resetFlares(flares: Flare[]): void {
   }
 }
 
-/** Partículas de halo cuyo borde mira hacia afuera: radialmente en la esfera, hacia arriba/abajo en el panel. */
+/** Halo particles whose edge faces outward: radially on the sphere, up/down on the panel. */
 export function flareCandidates(kind: Uint8Array, target: Float32Array, rim: Float32Array, mode: 'sphere' | 'panel'): Int32Array {
   const list: number[] = [];
   for (let i = 0; i < kind.length; i++) {
@@ -62,7 +62,7 @@ export function flareCandidates(kind: Uint8Array, target: Float32Array, rim: Flo
   return Int32Array.from(list);
 }
 
-/** Avanza los emisores. En cada ciclo nuevo elige una fuente alejada de las demás. */
+/** Advances the emitters. On each new cycle, picks a source far from the others. */
 export function updateFlares(flares: Flare[], time: number, candidates: Int32Array, target: Float32Array, separation: number, timing: FlareTiming): void {
   for (let f = 0; f < flares.length; f++) {
     const fl = flares[f];
@@ -96,7 +96,7 @@ export function updateFlares(flares: Flare[], time: number, candidates: Int32Arr
   }
 }
 
-/** Entrada/salida por partícula: posición de reposo (se modifica en el halo) y acumuladores del despegue del borde. */
+/** Per-particle input/output: rest position (modified for the halo) and edge peel-off accumulators. */
 export interface FlareIO {
   x: number;
   y: number;
@@ -113,8 +113,8 @@ export function createFlareIO(): FlareIO {
 }
 
 /**
- * Aplica las erupciones activas a la partícula i.
- * El halo cercano a la fuente sigue un arco hacia afuera y vuelve; el borde interior se despega levemente.
+ * Applies the active flares to particle i.
+ * The halo near the source follows an outward arc and returns; the inner edge peels off slightly.
  */
 export function applyFlares(
   io: FlareIO,

@@ -1,5 +1,5 @@
-// Trazos del wordmark de basement.studio (viewBox 0 0 107 15), en coordenadas absolutas.
-// Fuente: SVG del header de https://basement.studio — ver docs/superpowers/specs/assets/basement-wordmark.svg
+// basement.studio wordmark paths (viewBox 0 0 107 15), in absolute coordinates, taken from the header SVG of https://basement.studio.
+// The basement.studio logo and wordmark are trademarks of basement.studio, used here for a non-commercial tribute, and are not covered by this project's license.
 
 export interface BBox {
   x0: number;
@@ -12,7 +12,7 @@ export interface PathPart {
   d: string;
   dx: number;
   dy: number;
-  /** Bounding box del trazo en unidades SVG, ya desplazado por dx/dy. */
+  /** Path bounding box in SVG units, already offset by dx/dy. */
   bbox: BBox;
 }
 
@@ -22,13 +22,13 @@ export interface Composition {
   dot: PathPart[];
 }
 
-/** Subtrazos 0–1: la b con su hueco. */
+/** Subpaths 0–1: the b with its hole. */
 export const B_GLYPH = "M3.544 5.685C3.952 3.968 5.028 3.488 7.255 3.488 10.557 3.488 11.318 4.3 11.318 8.435V10.04C11.318 14.156 10.539 14.987 7.069 14.987 5.01 14.987 3.804 14.027 3.451 12.107V14.765H0V0H3.544V5.685ZM3.562 10.871C3.674 11.572 4.323 11.941 5.566 11.941 7.273 11.941 7.589 11.572 7.589 9.967V8.545C7.589 6.903 7.273 6.534 5.566 6.534 4.304 6.534 3.655 7.013 3.562 8.01V10.871Z";
 
-/** Subtrazos 0–11: "basement" sin el punto. */
+/** Subpaths 0–11: "basement" without the dot. */
 export const WORD_BODY = "M3.544 5.685C3.952 3.968 5.028 3.488 7.255 3.488 10.557 3.488 11.318 4.3 11.318 8.435V10.04C11.318 14.156 10.539 14.987 7.069 14.987 5.01 14.987 3.804 14.027 3.451 12.107V14.765H0V0H3.544V5.685ZM3.562 10.871C3.674 11.572 4.323 11.941 5.566 11.941 7.273 11.941 7.589 11.572 7.589 9.967V8.545C7.589 6.903 7.273 6.534 5.566 6.534 4.304 6.534 3.655 7.013 3.562 8.01V10.871ZM12.505 11.572C12.505 8.73 13.173 8.195 16.754 8.195L20.279 8.176V7.549C20.279 6.275 19.982 6.054 18.424 6.054 16.68 6.054 16.364 6.275 16.402 7.549H12.876V7.106C12.876 4.06 13.693 3.488 18.034 3.488H18.888C23.025 3.488 23.805 4.079 23.805 7.309V14.765H20.279V12.809C19.797 14.285 18.554 14.968 16.81 14.987 13.173 15.097 12.505 14.562 12.505 11.572ZM16.216 11.609C16.216 12.347 16.494 12.495 17.942 12.495H18.127C19.686 12.458 20.279 12.126 20.279 11.258V10.779L17.366 10.797C16.402 10.797 16.216 10.926 16.216 11.609ZM24.992 11.314V11.074H28.332V11.314C28.332 12.163 28.796 12.403 30.521 12.403 32.117 12.403 32.543 12.218 32.543 11.554 32.543 11.111 32.154 10.815 30.521 10.52 29.872 10.391 28.183 10.133 27.07 9.708 25.549 9.118 25.159 8.287 25.159 6.81 25.159 3.987 25.975 3.488 30.187 3.488H31.041C35.178 3.488 35.957 4.06 35.957 7.217V7.549H32.432V7.217C32.432 6.312 32.042 6.054 30.614 6.054 29.241 6.054 28.87 6.238 28.87 6.921 28.87 7.383 29.204 7.604 30.41 7.789 32.228 8.084 33.081 8.305 34.046 8.582 35.809 9.099 36.236 10.114 36.236 11.812 36.236 14.47 35.382 14.987 30.706 14.987H29.853C25.771 14.987 24.992 14.396 24.992 11.314ZM37.312 9.247C37.312 4.374 38.165 3.488 42.711 3.488H43.564C48.147 3.488 49.001 4.3 49.001 8.693V10.428H41.022V10.483C41.022 12.089 41.356 12.403 43.156 12.403 44.882 12.403 45.197 12.2 45.197 11.259H48.908C48.908 14.396 48.073 14.987 43.564 14.987H42.711C38.165 14.987 37.312 14.082 37.312 9.247ZM41.023 7.826H45.29C45.271 6.331 44.9 6.054 43.156 6.054 41.357 6.054 41.023 6.331 41.023 7.77V7.826ZM50.559 14.765V3.71H54.084V5.814C54.474 4.153 55.42 3.488 57.072 3.488 59.892 3.488 60.504 3.931 60.653 6.035 61.061 4.282 62.193 3.488 64.066 3.488 67.462 3.488 68.093 4.134 68.093 7.604L68.111 14.765H64.586V8.139C64.586 6.7 64.345 6.423 62.935 6.423 61.747 6.423 61.135 7.032 61.098 8.25L61.116 14.765H57.61V8.139C57.61 6.7 57.331 6.423 55.921 6.423 54.697 6.423 54.084 7.069 54.084 8.361V14.765H50.559ZM69.484 9.247C69.484 4.374 70.338 3.488 74.902 3.488H75.755C80.301 3.488 81.155 4.3 81.155 8.693V10.428H73.176V10.483C73.176 12.089 73.51 12.403 75.347 12.403 77.054 12.403 77.37 12.2 77.37 11.259H81.062C81.062 14.396 80.227 14.987 75.755 14.987H74.902C70.338 14.987 69.484 14.082 69.484 9.247ZM73.176 7.826H77.462C77.444 6.331 77.073 6.054 75.347 6.054 73.51 6.054 73.176 6.331 73.176 7.77V7.826ZM82.695 14.765V3.71H86.22V5.943C86.646 4.153 87.723 3.488 89.764 3.488 92.992 3.488 93.604 4.134 93.604 7.604L93.623 14.765H90.098V8.435C90.098 6.737 89.801 6.423 88.168 6.423 86.888 6.423 86.238 6.995 86.22 8.176V14.765H82.695ZM94.532 6.644V3.71H95.812V1.329H99.152V3.71H102.324V6.644H99.152V10.52C99.152 11.443 99.356 11.628 100.451 11.628H102.491V14.765H100.079C96.35 14.765 95.627 14.175 95.627 11.056V6.644H94.532Z";
 
-/** Subtrazo 12: el punto. */
+/** Subpath 12: the dot. */
 export const DOT = "M103.827 14.765V11.628H107V14.765H103.827Z";
 
 export const B_BBOX: BBox = { x0: 0, y0: 0, x1: 11.318, y1: 14.987 };
@@ -43,14 +43,14 @@ function part(d: string, bbox: BBox, dx = 0, dy = 0): PathPart {
   return { d, dx, dy, bbox: { x0: bbox.x0 + dx, y0: bbox.y0 + dy, x1: bbox.x1 + dx, y1: bbox.y1 + dy } };
 }
 
-/** Isotipo "b.": la b con el punto a su derecha, sobre la misma línea base. */
+/** "b." isotype: the b with the dot to its right, on the same baseline. */
 export function isoComposition(dotGap: number): Composition {
   const body = part(B_GLYPH, B_BBOX);
   const dot = part(DOT, DOT_BBOX, B_BBOX.x1 + dotGap - DOT_BBOX.x0, 0);
   return { frame: union(body.bbox, dot.bbox), body: [body], dot: [dot] };
 }
 
-/** Wordmark "basement." con el punto en su posición original. */
+/** "basement." wordmark with the dot in its original position. */
 export function wordComposition(): Composition {
   const body = part(WORD_BODY, WORD_BODY_BBOX);
   const dot = part(DOT, DOT_BBOX);

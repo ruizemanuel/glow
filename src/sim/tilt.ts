@@ -18,8 +18,8 @@ export interface TiltParams {
 }
 
 /**
- * Inclinación con resorte hacia un ruido lento más la posición del puntero.
- * pointerNx, pointerNy ∈ [−1, 1] (y hacia abajo). `max` escala todo respecto del máximo de referencia 0.13 rad.
+ * Spring-driven tilt toward slow noise plus the pointer position.
+ * pointerNx, pointerNy ∈ [−1, 1] (y downward). `max` scales everything relative to the reference max of 0.13 rad.
  */
 export function updateTilt(
   t: Tilt,

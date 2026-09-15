@@ -4,7 +4,7 @@ import { bodyTarget, dotCenter, localProgress, morphDelay } from '../src/sim/mor
 const spread = 0.6;
 
 describe('morphDelay', () => {
-  it('queda siempre en [0, spread] y crece hacia la derecha', () => {
+  it('always stays in [0, spread] and increases to the right', () => {
     expect(morphDelay(-1, 0, spread)).toBe(0);
     expect(morphDelay(1, 1, spread)).toBeCloseTo(spread, 10);
     expect(morphDelay(0.5, 0.5, spread)).toBeGreaterThan(morphDelay(-0.5, 0.5, spread));
@@ -13,14 +13,14 @@ describe('morphDelay', () => {
 });
 
 describe('localProgress', () => {
-  it('vale 0 en p = 0 y 1 en p = 1 para cualquier retraso válido', () => {
+  it('is 0 at p = 0 and 1 at p = 1 for any valid delay', () => {
     for (const delay of [0, 0.2, 0.45, spread]) {
       expect(localProgress(0, delay, spread)).toBe(0);
       expect(localProgress(1, delay, spread)).toBe(1);
     }
   });
 
-  it('es continua y monótona en p', () => {
+  it('is continuous and monotonic in p', () => {
     let prev = 0;
     for (let p = 0; p <= 1.0001; p += 0.01) {
       const q = localProgress(p, 0.3, spread);
@@ -33,7 +33,7 @@ describe('localProgress', () => {
 
 describe('bodyTarget', () => {
   const out = [0, 0, 0];
-  it('coincide con A en q = 0 y con B en q = 1', () => {
+  it('matches A at q = 0 and B at q = 1', () => {
     bodyTarget(out, 1, 2, 3, -4, 5, -6, 0, 1, 0, 0, 0.35);
     expect(out).toEqual([1, 2, 3]);
     bodyTarget(out, 1, 2, 3, -4, 5, -6, 0, 1, 0, 1, 0.35);
@@ -42,14 +42,14 @@ describe('bodyTarget', () => {
     expect(out[2]).toBeCloseTo(-6, 10);
   });
 
-  it('se desvía en nube a mitad de camino', () => {
+  it('deviates into a cloud at the midpoint', () => {
     bodyTarget(out, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0.5, 0.35);
     expect(out[1]).toBeCloseTo(0.35, 10);
   });
 });
 
 describe('dotCenter', () => {
-  it('va de A a B pasando por arriba', () => {
+  it('goes from A to B passing over the top', () => {
     const out = [0, 0];
     dotCenter(out, 0, 0.8, -0.7, 2.5, -0.2, 0.25);
     expect(out).toEqual([0.8, -0.7]);

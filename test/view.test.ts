@@ -5,7 +5,7 @@ import { computeLayout, projectToScreen, rotate, screenToWorld, tiltMatrix } fro
 const shapes = { wordHalfHeight: 0.1402, isoHalfSvg: 7.5455, wordHalfSvg: 53.5 };
 
 describe('computeLayout', () => {
-  it('ajusta el isotipo al lado menor y el wordmark al ancho', () => {
+  it('fits the isotype to the shorter side and the wordmark to the width', () => {
     const l = computeLayout(1440, 900, 1, shapes, CONFIG);
     expect(l.pxPerUnit).toBeCloseTo((0.55 * 900) / 2, 5);
     expect(2 * l.wordScale * l.pxPerUnit).toBeCloseTo(0.88 * 1440, 3);
@@ -13,12 +13,12 @@ describe('computeLayout', () => {
     expect(l.mobile).toBe(false);
   });
 
-  it('limita el wordmark por alto en pantallas muy anchas', () => {
+  it('limits the wordmark by height on very wide screens', () => {
     const l = computeLayout(3000, 500, 1, shapes, CONFIG);
     expect(2 * 0.1402 * l.wordScale * l.pxPerUnit).toBeCloseTo(0.4 * 500, 3);
   });
 
-  it('usa píxeles de dispositivo con el dpr acotado', () => {
+  it('uses device pixels with the clamped dpr', () => {
     const l = computeLayout(390, 844, 3, shapes, CONFIG);
     expect(l.dpr).toBe(2);
     expect(l.width).toBe(780);
@@ -26,8 +26,8 @@ describe('computeLayout', () => {
   });
 });
 
-describe('rotación', () => {
-  it('tiltMatrix coincide con rotate', () => {
+describe('rotation', () => {
+  it('tiltMatrix matches rotate', () => {
     const yaw = 0.3;
     const pitch = -0.2;
     const m = tiltMatrix(yaw, pitch);
@@ -41,8 +41,8 @@ describe('rotación', () => {
   });
 });
 
-describe('proyección', () => {
-  it('screenToWorld invierte projectToScreen en z = 0', () => {
+describe('projection', () => {
+  it('screenToWorld inverts projectToScreen at z = 0', () => {
     const l = computeLayout(1280, 800, 2, shapes, CONFIG);
     const [px, py] = projectToScreen(l, CONFIG.camDist, 0.5, -0.25, 0);
     const [x, y] = screenToWorld(l, px / l.dpr, py / l.dpr);

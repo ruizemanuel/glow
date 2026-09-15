@@ -12,10 +12,10 @@ import { createTilt, updateTilt, type Tilt } from './tilt';
 
 export interface Pointer {
   active: boolean;
-  /** Posición en mundo (plano z = 0). */
+  /** World position (z = 0 plane). */
   x: number;
   y: number;
-  /** Posición normalizada en el lienzo, [−1, 1], y hacia abajo. */
+  /** Normalized position on the canvas, [−1, 1], y downward. */
   nx: number;
   ny: number;
   strength: number;
@@ -166,7 +166,7 @@ export function stepSim(sim: Sim, state: SceneState, dt: number, reduced: boolea
     const presenceTarget = i < sim.nActive ? 1 : 0;
     P.presence[i] = reduced ? presenceTarget : P.presence[i] + (presenceTarget - P.presence[i]) * presenceRate;
 
-    // Objetivo de reposo según el estado.
+    // Rest target for the current state.
     let q: number;
     if (morphing) q = reduced ? (state.p < 0.5 ? 0 : 1) : isDot ? dotQ : localProgress(state.p, P.morphDelay[i], cfg.morph.spread);
     else q = onB ? 1 : 0;
@@ -205,7 +205,7 @@ export function stepSim(sim: Sim, state: SceneState, dt: number, reduced: boolea
     const travel = lerp(P.travelA[i], P.travelB[i], q);
     const edge = lerp(P.edgeA[i], P.edgeB[i], q);
 
-    // Formación inicial.
+    // Initial formation.
     if (reduced) {
       P.lock[i] = 1;
       P.lockVel[i] = 0;
@@ -216,7 +216,7 @@ export function stepSim(sim: Sim, state: SceneState, dt: number, reduced: boolea
     }
     const k = smoothstep(P.lock[i]);
 
-    // Respiración.
+    // Breathing.
     const phase = P.phase[i];
     const phase2 = P.phase2[i];
     const c = time * P.speed[i];
@@ -236,7 +236,7 @@ export function stepSim(sim: Sim, state: SceneState, dt: number, reduced: boolea
     io.y = ry + oy;
     io.z = rz + fieldSample[2] * amount * (0.75 + 0.25 * room) * P.buoyancy[i] + fuzz * Math.cos(0.67 * c + 3 * rx + phase);
 
-    // Erupciones.
+    // Flares.
     io.peelX = 0;
     io.peelY = 0;
     io.peelZ = 0;
@@ -248,7 +248,7 @@ export function stepSim(sim: Sim, state: SceneState, dt: number, reduced: boolea
     }
     P.flareGlow[i] = reduced ? 0 : P.flareGlow[i] + (io.energy - P.flareGlow[i]) * glowRate;
 
-    // Objetivo final: desde la nube hacia el reposo según el lock.
+    // Final target: from the cloud toward rest, according to lock.
     const wx = P.cloud[i3] * cosT + P.cloud[i3 + 2] * sinT + 0.21 * Math.sin(0.29 * c + phase) + 0.07 * Math.cos(0.43 * c + phase2);
     const wy = P.cloud[i3 + 1] + 0.18 * Math.cos(0.24 * c + phase2) + 0.08 * Math.sin(0.47 * c + phase);
     const wz = P.cloud[i3 + 2] * cosT - P.cloud[i3] * sinT + 0.21 * Math.sin(0.23 * c + phase2);
@@ -257,7 +257,7 @@ export function stepSim(sim: Sim, state: SceneState, dt: number, reduced: boolea
     const gy = lerp(wy, io.y + io.peelY, follow);
     const gz = lerp(wz, io.z + io.peelZ, follow);
 
-    // Resorte.
+    // Spring.
     const loose = morphing && !reduced ? 1 - 0.85 * Math.sin(Math.PI * q) : 1;
     const lk = k * loose;
     let stiffness = lerp(spring.kLoose, isHalo ? lerp(17, 42, io.energy) : spring.kTight, lk) / P.mass[i];
@@ -301,7 +301,7 @@ export function stepSim(sim: Sim, state: SceneState, dt: number, reduced: boolea
       P.pos[i3 + 2] = pz + P.vel[i3 + 2] * dt;
     }
 
-    // Calor.
+    // Heat.
     const nx = lerp(P.normalA[i3], P.normalB[i3], q);
     const ny = lerp(P.normalA[i3 + 1], P.normalB[i3 + 1], q);
     const nz = lerp(P.normalA[i3 + 2], P.normalB[i3 + 2], q);
@@ -311,7 +311,7 @@ export function stepSim(sim: Sim, state: SceneState, dt: number, reduced: boolea
     const facing = ny * sp + rnz * cp;
     const light = Math.max(0, -0.35 * rnx + 0.48 * rny + 0.8 * facing);
     let bright = 0.16 + 0.27 * Math.max(0, facing) + 0.57 * light + 0.04 * (1 - smoothstep(edge / 0.031));
-    // El punto brilla por sí mismo: depende poco de la iluminación.
+    // The dot glows on its own: it depends little on lighting.
     if (isDot) bright += (1 - bright) * cfg.heat.dotEmissive;
     if (kind === KIND_VOLUME) bright *= 0.4;
     else if (kind === KIND_RIM) bright *= 0.9;
@@ -329,7 +329,7 @@ export function stepSim(sim: Sim, state: SceneState, dt: number, reduced: boolea
   while (sim.nHigh > sim.nActive && P.presence[sim.nHigh - 1] < 0.005) sim.nHigh--;
 }
 
-/** Escribe las instancias visibles como [x, y, z, radio, calor] y devuelve cuántas son. */
+/** Writes the visible instances as [x, y, z, radius, heat] and returns how many there are. */
 export function writeInstances(sim: Sim, out: Float32Array): number {
   const P = sim.particles;
   let n = 0;

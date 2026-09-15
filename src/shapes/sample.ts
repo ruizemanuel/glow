@@ -12,7 +12,7 @@ export interface KindFractions {
   halo: number;
 }
 
-/** Cantidad de puntos por tipo [surface, volume, rim, halo]; el redondeo sobrante va a surface. */
+/** Number of points per kind [surface, volume, rim, halo]; leftover rounding goes to surface. */
 export function kindCounts(n: number, f: KindFractions): [number, number, number, number] {
   const volume = Math.round(n * f.volume);
   const rim = Math.round(n * f.rim);
@@ -20,22 +20,22 @@ export function kindCounts(n: number, f: KindFractions): [number, number, number
   return [n - volume - rim - halo, volume, rim, halo];
 }
 
-/** Puntos muestreados en coordenadas de la máscara (píxeles, y hacia abajo), agrupados por tipo. */
+/** Points sampled in mask coordinates (pixels, y downward), grouped by kind. */
 export interface Sample2D {
   count: number;
-  /** Posición base. En el halo es el punto del borde de donde sale. */
+  /** Base position. For the halo, this is the edge point it emerges from. */
   x: Float32Array;
   y: Float32Array;
-  /** Desplazamiento del halo respecto de la base (0 en los demás tipos). */
+  /** Halo offset relative to the base (0 for the other kinds). */
   ox: Float32Array;
   oy: Float32Array;
   oz: Float32Array;
-  /** Normal 2D hacia afuera (unitaria, o 0 si no está definida). */
+  /** Outward-facing 2D normal (unit length, or 0 if undefined). */
   nx: Float32Array;
   ny: Float32Array;
-  /** Distancia al borde en píxeles (0 en rim y halo). */
+  /** Distance to the edge in pixels (0 for rim and halo). */
   edge: Float32Array;
-  /** Valor uniforme en [0, 1) para la profundidad del volumen. */
+  /** Uniform value in [0, 1) for volume depth. */
   depth: Float32Array;
   kind: Uint8Array;
 }
@@ -45,7 +45,7 @@ export interface HaloParams {
   maxPx: number;
 }
 
-/** Normal hacia afuera en un píxel: suma de direcciones a vecinos exteriores o, si no hay, el gradiente de distancia. */
+/** Outward normal at a pixel: sum of directions to exterior neighbors, or the distance gradient if there are none. */
 export function outwardNormal(
   mask: Uint8Array,
   dist: Float32Array,
