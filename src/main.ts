@@ -96,7 +96,8 @@ function start(): void {
   });
   hint.addEventListener('click', toggle);
   window.addEventListener('keydown', (e) => {
-    if (e.target === hint || e.repeat) return;
+    // Focused links and buttons handle Space/Enter themselves (the hint toggles, the repo link navigates).
+    if (e.repeat || (e.target instanceof Element && e.target.closest('a, button'))) return;
     if (e.code === 'Space' || e.code === 'Enter') {
       e.preventDefault();
       toggle();

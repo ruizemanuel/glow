@@ -56,6 +56,28 @@ body {
   outline: none;
 }
 
+/* Repository link: 20 px icon inside a 44 px touch target, 20 px from the corner. */
+#repo {
+  position: fixed;
+  top: max(8px, env(safe-area-inset-top));
+  right: max(8px, env(safe-area-inset-right));
+  display: flex;
+  padding: 12px;
+  border-radius: 999px;
+  color: var(--ui-muted);
+  transition: color 0.15s;
+}
+
+#repo:hover,
+#repo:focus-visible {
+  color: var(--ui);
+}
+
+#repo:focus-visible {
+  outline: 1px solid rgb(255 77 0 / 0.6);
+  outline-offset: -4px;
+}
+
 #fps {
   position: fixed;
   right: 16px;
