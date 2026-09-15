@@ -2,6 +2,8 @@
   "name": "glow",
   "private": true,
   "version": "0.0.0",
+  "description": "~24k WebGL2 embers form the basement.studio b. isotype and flow into the basement. wordmark on click.",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",
